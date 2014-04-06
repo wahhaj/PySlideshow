@@ -1,123 +1,32 @@
+#!/usr/bin/env python
+
 import sys
-from PySide import QtCore, QtGui
+import platform
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(809, 604)
-        MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.Canada))
-        self.centralwidget = QtGui.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.gridLayout = QtGui.QGridLayout(self.centralwidget)
-        self.gridLayout.setObjectName("gridLayout")
-        self.image = QtGui.QLabel(self.centralwidget)
-        self.image.setText("")
-        self.image.setScaledContents(True)
-        self.image.setObjectName("image")
-        self.gridLayout.addWidget(self.image, 0, 0, 1, 1)
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.horizontalLayout.addItem(spacerItem)
-        self.btnPrev = QtGui.QPushButton(self.centralwidget)
-        self.btnPrev.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.btnPrev.setObjectName("btnPrev")
-        self.horizontalLayout.addWidget(self.btnPrev)
-        self.btnPlay = QtGui.QPushButton(self.centralwidget)
-        self.btnPlay.setMaximumSize(QtCore.QSize(60, 16777215))
-        self.btnPlay.setIconSize(QtCore.QSize(20, 20))
-        self.btnPlay.setObjectName("btnPlay")
-        self.horizontalLayout.addWidget(self.btnPlay)
-        self.btnNext = QtGui.QPushButton(self.centralwidget)
-        self.btnNext.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.btnNext.setObjectName("btnNext")
-        self.horizontalLayout.addWidget(self.btnNext)
-        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.horizontalLayout.addItem(spacerItem1)
-        self.btnDelete = QtGui.QPushButton(self.centralwidget)
-        self.btnDelete.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.btnDelete.setObjectName("btnDelete")
-        self.horizontalLayout.addWidget(self.btnDelete)
-        self.horizontalLayout.setStretch(0, 1)
-        self.horizontalLayout.setStretch(4, 1)
-        self.gridLayout.addLayout(self.horizontalLayout, 1, 0, 1, 1)
-        self.gridLayout.setRowStretch(0, 1)
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 809, 26))
-        self.menubar.setObjectName("menubar")
-        self.menuFile = QtGui.QMenu(self.menubar)
-        self.menuFile.setObjectName("menuFile")
-        self.menuOption = QtGui.QMenu(self.menubar)
-        self.menuOption.setObjectName("menuOption")
-        self.menuSlideshow_speed = QtGui.QMenu(self.menuOption)
-        self.menuSlideshow_speed.setObjectName("menuSlideshow_speed")
-        self.menuAbout = QtGui.QMenu(self.menubar)
-        self.menuAbout.setObjectName("menuAbout")
-        MainWindow.setMenuBar(self.menubar)
-        self.actionInclude_subfolders = QtGui.QAction(MainWindow)
-        self.actionInclude_subfolders.setCheckable(True)
-        self.actionInclude_subfolders.setObjectName("actionInclude_subfolders")
-        self.actionOpen_directory = QtGui.QAction(MainWindow)
-        self.actionOpen_directory.setObjectName("actionOpen_directory")
-        self.actionExit = QtGui.QAction(MainWindow)
-        self.actionExit.setObjectName("actionExit")
-        self.actionSlow = QtGui.QAction(MainWindow)
-        self.actionSlow.setCheckable(True)
-        self.actionSlow.setObjectName("actionSlow")
-        self.actionMedium = QtGui.QAction(MainWindow)
-        self.actionMedium.setCheckable(True)
-        self.actionMedium.setObjectName("actionMedium")
-        self.actionFast = QtGui.QAction(MainWindow)
-        self.actionFast.setCheckable(True)
-        self.actionFast.setObjectName("actionFast")
-        self.actionCustom = QtGui.QAction(MainWindow)
-        self.actionCustom.setCheckable(True)
-        self.actionCustom.setObjectName("actionCustom")
-        self.menuFile.addAction(self.actionOpen_directory)
-        self.menuFile.addAction(self.actionExit)
-        self.menuSlideshow_speed.addAction(self.actionSlow)
-        self.menuSlideshow_speed.addAction(self.actionMedium)
-        self.menuSlideshow_speed.addAction(self.actionFast)
-        self.menuSlideshow_speed.addAction(self.actionCustom)
-        self.menuOption.addAction(self.actionInclude_subfolders)
-        self.menuOption.addAction(self.menuSlideshow_speed.menuAction())
-        self.menubar.addAction(self.menuFile.menuAction())
-        self.menubar.addAction(self.menuOption.menuAction())
-        self.menubar.addAction(self.menuAbout.menuAction())
+import PySide
+from PySide.QtGui import QApplication, QMainWindow, QFileDialog
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+__version__ = '0.0.1'
 
-    def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Slideshow", None, QtGui.QApplication.UnicodeUTF8))
-        self.btnPrev.setText(QtGui.QApplication.translate("MainWindow", "<-", None, QtGui.QApplication.UnicodeUTF8))
-        self.btnPlay.setToolTip(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p>Start slideshow</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.btnPlay.setText(QtGui.QApplication.translate("MainWindow", "Play", None, QtGui.QApplication.UnicodeUTF8))
-        self.btnNext.setText(QtGui.QApplication.translate("MainWindow", "->", None, QtGui.QApplication.UnicodeUTF8))
-        self.btnDelete.setToolTip(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p>Delete image</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.btnDelete.setText(QtGui.QApplication.translate("MainWindow", "X", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuOption.setTitle(QtGui.QApplication.translate("MainWindow", "Options", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuSlideshow_speed.setTitle(QtGui.QApplication.translate("MainWindow", "Slideshow speed", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuAbout.setTitle(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionInclude_subfolders.setText(QtGui.QApplication.translate("MainWindow", "Include subfolders", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionOpen_directory.setText(QtGui.QApplication.translate("MainWindow", "Open directory", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSlow.setText(QtGui.QApplication.translate("MainWindow", "Slow", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionMedium.setText(QtGui.QApplication.translate("MainWindow", "Medium", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionFast.setText(QtGui.QApplication.translate("MainWindow", "Fast", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionCustom.setText(QtGui.QApplication.translate("MainWindow", "Custom", None, QtGui.QApplication.UnicodeUTF8))
+from ui_slideshow import Ui_MainWindow
+import qrc_slideshow
 
-
-class ControlMainWindow(QtGui.QMainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
-        super(ControlMainWindow, self).__init__(parent)
-        self.ui =  Ui_MainWindow()
-        self.ui.setupUi(self)
+        super(MainWindow, self).__init__(parent)
+        self.setupUi(self)
 
-if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
-    mySW = ControlMainWindow()
-    mySW.show()
-    sys.exit(app.exec_())
+        self.actionExit.triggered.connect(self.close)
+        self.actionOpen_directory.triggered.connect(self.choose_dir)
+
+    def choose_dir(self):
+        image_dir = QFileDialog.getExistingDirectory(self, self.tr("Choose directory"))
+
+        print(image_dir)
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    frame = MainWindow()
+    frame.show()
+    app.exec_()

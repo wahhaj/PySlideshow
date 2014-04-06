@@ -52,8 +52,21 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Previous image</string>
+        </property>
         <property name="text">
-         <string>&lt;-</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="slideshow_icons.qrc">
+          <normaloff>:/icons/images/media-seek-backward.png</normaloff>:/icons/images/media-seek-backward.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -66,15 +79,19 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start slideshow&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Start slideshow</string>
         </property>
         <property name="text">
-         <string>Play</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="slideshow_icons.qrc">
+          <normaloff>:/icons/images/media-playback-start.png</normaloff>:/icons/images/media-playback-start.png</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>20</width>
-          <height>20</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
        </widget>
@@ -87,8 +104,21 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Next image</string>
+        </property>
         <property name="text">
-         <string>-&gt;</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="slideshow_icons.qrc">
+          <normaloff>:/icons/images/media-seek-forward.png</normaloff>:/icons/images/media-seek-forward.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -114,10 +144,20 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Delete Image</string>
         </property>
         <property name="text">
-         <string>X</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="slideshow_icons.qrc">
+          <normaloff>:/icons/images/edit-delete.png</normaloff>:/icons/images/edit-delete.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -139,6 +179,7 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen_directory"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuOption">
@@ -161,6 +202,8 @@
     <property name="title">
      <string>About</string>
     </property>
+    <addaction name="actionAbout_Slideshow"/>
+    <addaction name="actionAbout_PySide"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOption"/>
@@ -216,7 +259,25 @@
     <string>Custom</string>
    </property>
   </action>
+  <action name="actionAbout_Slideshow">
+   <property name="text">
+    <string>About Slideshow</string>
+   </property>
+  </action>
+  <action name="actionAbout_PySide">
+   <property name="text">
+    <string>About PySide</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <tabstops>
+  <tabstop>btnPlay</tabstop>
+  <tabstop>btnNext</tabstop>
+  <tabstop>btnPrev</tabstop>
+  <tabstop>btnDelete</tabstop>
+ </tabstops>
+ <resources>
+  <include location="slideshow_icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
