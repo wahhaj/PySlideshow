@@ -20,12 +20,21 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout" rowstretch="1,0">
     <item row="0" column="0">
-     <widget class="QLabel" name="image">
+     <widget class="QLabel" name="lbl_image">
       <property name="text">
        <string/>
       </property>
       <property name="scaledContents">
-       <bool>true</bool>
+       <bool>false</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>false</bool>
+      </property>
+      <property name="margin">
+       <number>0</number>
       </property>
      </widget>
     </item>
@@ -45,12 +54,15 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="btnPrev">
+       <widget class="QPushButton" name="btn_prev">
         <property name="maximumSize">
          <size>
           <width>50</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>Previous image</string>
@@ -71,12 +83,15 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnPlay">
+       <widget class="QPushButton" name="btn_play">
         <property name="maximumSize">
          <size>
           <width>60</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>Start slideshow</string>
@@ -97,12 +112,15 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnNext">
+       <widget class="QPushButton" name="btn_next">
         <property name="maximumSize">
          <size>
           <width>50</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>Next image</string>
@@ -136,12 +154,15 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="btnDelete">
+       <widget class="QPushButton" name="btn_delete">
         <property name="maximumSize">
          <size>
           <width>50</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>Delete Image</string>
@@ -178,9 +199,9 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOpen_directory"/>
+    <addaction name="action_open"/>
     <addaction name="separator"/>
-    <addaction name="actionExit"/>
+    <addaction name="action_exit"/>
    </widget>
    <widget class="QMenu" name="menuOption">
     <property name="title">
@@ -190,26 +211,26 @@
      <property name="title">
       <string>Slideshow speed</string>
      </property>
-     <addaction name="actionSlow"/>
-     <addaction name="actionMedium"/>
-     <addaction name="actionFast"/>
-     <addaction name="actionCustom"/>
+     <addaction name="action_speed_slow"/>
+     <addaction name="action_speed_medium"/>
+     <addaction name="action_speed_fast"/>
+     <addaction name="action_speed_custom"/>
     </widget>
-    <addaction name="actionInclude_subfolders"/>
+    <addaction name="action_recursive"/>
     <addaction name="menuSlideshow_speed"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
      <string>About</string>
     </property>
-    <addaction name="actionAbout_Slideshow"/>
-    <addaction name="actionAbout_PySide"/>
+    <addaction name="action_about_slideshow"/>
+    <addaction name="action_about_pyside"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOption"/>
    <addaction name="menuAbout"/>
   </widget>
-  <action name="actionInclude_subfolders">
+  <action name="action_recursive">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -217,17 +238,17 @@
     <string>Include subfolders</string>
    </property>
   </action>
-  <action name="actionOpen_directory">
+  <action name="action_open">
    <property name="text">
     <string>Open directory</string>
    </property>
   </action>
-  <action name="actionExit">
+  <action name="action_exit">
    <property name="text">
     <string>Exit</string>
    </property>
   </action>
-  <action name="actionSlow">
+  <action name="action_speed_slow">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -235,7 +256,7 @@
     <string>Slow</string>
    </property>
   </action>
-  <action name="actionMedium">
+  <action name="action_speed_medium">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -243,7 +264,7 @@
     <string>Medium</string>
    </property>
   </action>
-  <action name="actionFast">
+  <action name="action_speed_fast">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -251,7 +272,7 @@
     <string>Fast</string>
    </property>
   </action>
-  <action name="actionCustom">
+  <action name="action_speed_custom">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -259,22 +280,22 @@
     <string>Custom</string>
    </property>
   </action>
-  <action name="actionAbout_Slideshow">
+  <action name="action_about_slideshow">
    <property name="text">
     <string>About Slideshow</string>
    </property>
   </action>
-  <action name="actionAbout_PySide">
+  <action name="action_about_pyside">
    <property name="text">
     <string>About PySide</string>
    </property>
   </action>
  </widget>
  <tabstops>
-  <tabstop>btnPlay</tabstop>
-  <tabstop>btnNext</tabstop>
-  <tabstop>btnPrev</tabstop>
-  <tabstop>btnDelete</tabstop>
+  <tabstop>btn_play</tabstop>
+  <tabstop>btn_next</tabstop>
+  <tabstop>btn_prev</tabstop>
+  <tabstop>btn_delete</tabstop>
  </tabstops>
  <resources>
   <include location="slideshow_icons.qrc"/>
