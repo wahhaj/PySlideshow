@@ -3,7 +3,7 @@
 import sys
 
 from PySide import QtCore
-from PySide.QtGui import QApplication, QMainWindow, QFileDialog, QImage, QPixmap, QIcon
+from PySide.QtGui import QApplication, QMainWindow, QFileDialog, QImage, QPixmap, QIcon, QInputDialog
 from pathlib import Path
 from random import randint
 from threading import Timer
@@ -23,13 +23,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_next.clicked.connect(self.next_image)
         self.btn_prev.clicked.connect(self.prev_image)
         self.btn_play.clicked.connect(self.slideshow)
-        
+
         #menu events
         self.action_exit.triggered.connect(self.close)
         self.action_open.triggered.connect(self.choose_dir)
-        self.action_speed_slow.triggered.connect(lambda: self.slideshow_speed(0))
+        self.action_speed_fast.triggered.connect(lambda: self.slideshow_speed(0))
         self.action_speed_medium.triggered.connect(lambda: self.slideshow_speed(1))
-        self.action_speed_fast.triggered.connect(lambda: self.slideshow_speed(2))
+        self.action_speed_slow.triggered.connect(lambda: self.slideshow_speed(2))
         self.action_speed_custom.triggered.connect(lambda: self.slideshow_speed(3))
 
         self.image_paths = []
@@ -111,27 +111,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.playing = True
             self.timer.start()
 
-    def slideshow_speed(self, sender):
+    def slideshow_speed(self, speed):
         """
-        Sets the slideshow interval based on 'sender' where
-        - 0 == slow (10s)
+        Set the slideshow interval based on 'sender' where
+        - 0 == fast (2s)
         - 1 == medium (5s)
-        - 2 == fast (2s)
+        - 2 == slow (10s)
         - 3 == custom (1-60s)
         """
-        self.action_speed_slow.setChecked(sender == 0)
-        self.action_speed_medium.setChecked(sender == 1)
-        self.action_speed_fast.setChecked(sender == 2)
-        self.action_speed_custom.setChecked(sender == 3)
+        intervals = [2000, 5000, 10000] #fast, medium, slow, custom slideshow intervals (milliseconds)
 
-        if sender == 0:
-            self.timer.setInterval(10000)
-        elif sender == 1:
-            self.timer.setInterval(5000)
-        elif sender == 2:
-            self.timer.setInterval(2000)
+        self.action_speed_fast.setChecked(speed == 0)
+        self.action_speed_medium.setChecked(speed == 1)
+        self.action_speed_slow.setChecked(speed == 2)
+        self.action_speed_custom.setChecked(speed >= 3)
 
-pass
+        if speed >= 0 and speed < 3:
+            self.timer.setInterval(intervals[speed])
+        else:
+            custom_speed, ok = QInputDialog.getInt(self, 'Custom Speed', 'Enter slideshow speed (1-60 seconds):', 1, 1, 60)
+
+            custom_speed *= 1000 #convert to seconds
+
+            if ok:
+                self.timer.setInterval(custom_speed)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
