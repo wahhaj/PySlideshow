@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '.\ui\slideshow_main.ui'
 #
-# Created: Sun Apr  6 18:13:39 2014
+# Created: Sun Apr  6 18:29:32 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,6 +13,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(809, 604)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/images/media-playback-start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.Canada))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -34,9 +37,9 @@ class Ui_MainWindow(object):
         self.btn_prev.setMaximumSize(QtCore.QSize(50, 16777215))
         self.btn_prev.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btn_prev.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/images/media-seek-backward.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_prev.setIcon(icon)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/icons/images/media-seek-backward.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_prev.setIcon(icon1)
         self.btn_prev.setIconSize(QtCore.QSize(32, 32))
         self.btn_prev.setObjectName("btn_prev")
         self.horizontalLayout.addWidget(self.btn_prev)
@@ -44,9 +47,7 @@ class Ui_MainWindow(object):
         self.btn_play.setMaximumSize(QtCore.QSize(60, 16777215))
         self.btn_play.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btn_play.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/icons/images/media-playback-start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_play.setIcon(icon1)
+        self.btn_play.setIcon(icon)
         self.btn_play.setIconSize(QtCore.QSize(32, 32))
         self.btn_play.setObjectName("btn_play")
         self.horizontalLayout.addWidget(self.btn_play)
@@ -89,6 +90,9 @@ class Ui_MainWindow(object):
         self.menuAbout = QtGui.QMenu(self.menubar)
         self.menuAbout.setObjectName("menuAbout")
         MainWindow.setMenuBar(self.menubar)
+        self.status_bar = QtGui.QStatusBar(MainWindow)
+        self.status_bar.setObjectName("status_bar")
+        MainWindow.setStatusBar(self.status_bar)
         self.action_recursive = QtGui.QAction(MainWindow)
         self.action_recursive.setCheckable(True)
         self.action_recursive.setObjectName("action_recursive")

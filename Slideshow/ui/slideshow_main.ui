@@ -14,6 +14,10 @@
   <property name="windowTitle">
    <string>Slideshow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="slideshow_icons.qrc">
+    <normaloff>:/icons/images/media-playback-start.png</normaloff>:/icons/images/media-playback-start.png</iconset>
+  </property>
   <property name="locale">
    <locale language="English" country="Canada"/>
   </property>
@@ -230,6 +234,7 @@
    <addaction name="menuOption"/>
    <addaction name="menuAbout"/>
   </widget>
+  <widget class="QStatusBar" name="status_bar"/>
   <action name="action_recursive">
    <property name="checkable">
     <bool>true</bool>
