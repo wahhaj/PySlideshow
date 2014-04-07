@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '.\ui\slideshow_main.ui'
 #
-# Created: Sun Apr  6 18:29:32 2014
+# Created: Mon Apr  7 19:27:46 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -20,6 +20,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)
+        self.gridLayout.setContentsMargins(5, -1, 5, 0)
         self.gridLayout.setObjectName("gridLayout")
         self.lbl_image = QtGui.QLabel(self.centralwidget)
         self.lbl_image.setText("")
@@ -34,6 +35,7 @@ class Ui_MainWindow(object):
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.horizontalLayout.addItem(spacerItem)
         self.btn_prev = QtGui.QPushButton(self.centralwidget)
+        self.btn_prev.setEnabled(False)
         self.btn_prev.setMaximumSize(QtCore.QSize(50, 16777215))
         self.btn_prev.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btn_prev.setText("")
@@ -41,17 +43,23 @@ class Ui_MainWindow(object):
         icon1.addPixmap(QtGui.QPixmap(":/icons/images/media-seek-backward.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_prev.setIcon(icon1)
         self.btn_prev.setIconSize(QtCore.QSize(32, 32))
+        self.btn_prev.setDefault(False)
+        self.btn_prev.setFlat(False)
         self.btn_prev.setObjectName("btn_prev")
         self.horizontalLayout.addWidget(self.btn_prev)
         self.btn_play = QtGui.QPushButton(self.centralwidget)
+        self.btn_play.setEnabled(False)
         self.btn_play.setMaximumSize(QtCore.QSize(60, 16777215))
         self.btn_play.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btn_play.setText("")
         self.btn_play.setIcon(icon)
         self.btn_play.setIconSize(QtCore.QSize(32, 32))
+        self.btn_play.setDefault(False)
+        self.btn_play.setFlat(False)
         self.btn_play.setObjectName("btn_play")
         self.horizontalLayout.addWidget(self.btn_play)
         self.btn_next = QtGui.QPushButton(self.centralwidget)
+        self.btn_next.setEnabled(False)
         self.btn_next.setMaximumSize(QtCore.QSize(50, 16777215))
         self.btn_next.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btn_next.setText("")
@@ -59,11 +67,14 @@ class Ui_MainWindow(object):
         icon2.addPixmap(QtGui.QPixmap(":/icons/images/media-seek-forward.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_next.setIcon(icon2)
         self.btn_next.setIconSize(QtCore.QSize(32, 32))
+        self.btn_next.setDefault(False)
+        self.btn_next.setFlat(False)
         self.btn_next.setObjectName("btn_next")
         self.horizontalLayout.addWidget(self.btn_next)
         spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.horizontalLayout.addItem(spacerItem1)
         self.btn_delete = QtGui.QPushButton(self.centralwidget)
+        self.btn_delete.setEnabled(False)
         self.btn_delete.setMaximumSize(QtCore.QSize(50, 16777215))
         self.btn_delete.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btn_delete.setText("")
@@ -71,6 +82,8 @@ class Ui_MainWindow(object):
         icon3.addPixmap(QtGui.QPixmap(":/icons/images/edit-delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_delete.setIcon(icon3)
         self.btn_delete.setIconSize(QtCore.QSize(32, 32))
+        self.btn_delete.setDefault(False)
+        self.btn_delete.setFlat(False)
         self.btn_delete.setObjectName("btn_delete")
         self.horizontalLayout.addWidget(self.btn_delete)
         self.horizontalLayout.setStretch(0, 1)

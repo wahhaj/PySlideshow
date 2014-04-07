@@ -3,7 +3,7 @@
 import sys
 
 from PySide import QtCore
-from PySide.QtGui import QApplication, QMainWindow, QFileDialog, QImage, QPixmap, QIcon, QInputDialog
+from PySide.QtGui import QApplication, QMainWindow, QFileDialog, QImage, QPixmap, QIcon, QInputDialog, QMessageBox
 from pathlib import Path
 from random import randint
 from threading import Timer
@@ -18,11 +18,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
+        #self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        #self.showFullScreen()
 
         #button events
         self.btn_next.clicked.connect(self.next_image)
         self.btn_prev.clicked.connect(self.prev_image)
         self.btn_play.clicked.connect(self.slideshow)
+        self.btn_delete.clicked.connect(self.delete_image)
 
         #menu events
         self.action_exit.triggered.connect(self.close)
@@ -47,6 +50,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.next_image()
         elif e.key() == QtCore.Qt.Key_Space:
             self.slideshow()
+        elif e.key() == QtCore.Qt.Key_Delete:
+            self.delete_image()
 
 
     def choose_dir(self):
@@ -59,12 +64,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.image_paths = [x for x in Path(image_dir).glob("*") if x.suffix.lower() in ['.jpg', '.png', '.bmp']]
 
-        #shuffle array
-        for i in range(len(self.image_paths)-1, -1, -1):
-            j = randint(0, i)
-            self.image_paths[i], self.image_paths[j] = self.image_paths[j], self.image_paths[i]
+        if len(self.image_paths) > 0:
+            self.btn_next.setEnabled(True)
+            self.btn_prev.setEnabled(True)
+            self.btn_play.setEnabled(True)
+            self.btn_delete.setEnabled(True)
 
-        self.next_image()
+            #shuffle array
+            for i in range(len(self.image_paths)-1, -1, -1):
+                j = randint(0, i)
+                self.image_paths[i], self.image_paths[j] = self.image_paths[j], self.image_paths[i]
+
+            self.next_image()
+        else:
+            self.btn_next.setEnabled(False)
+            self.btn_prev.setEnabled(False)
+            self.btn_play.setEnabled(False)
+            self.btn_delete.setEnabled(False)
+
+            QMessageBox.information(self, "No Images", "No images were found in " + image_dir)
 
     def update_image(self):
         self.status_bar.showMessage(str(self.image_paths[self.i]))
@@ -78,12 +96,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             #if image width is greater than the label's and image is wider than tall
             if ratio[0] > 1 and ratio[0] > ratio[1]:
                 #scale image to label's width
-                image = image.scaledToWidth(lbl_size[0])
+                image = image.scaledToWidth(lbl_size[0], QtCore.Qt.SmoothTransformation)
 
             #if height greater and image is taller than it is wide
             elif ratio[1] > 1 and ratio[1] > ratio[0]:
                 #scale to label's height
-                image = image.scaledToHeight(lbl_size[1])
+                image = image.scaledToHeight(lbl_size[1], QtCore.Qt.SmoothTransformation)
 
             self.lbl_image.setPixmap(QPixmap.fromImage(image))
 
@@ -96,6 +114,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if len(self.image_paths) > 1:
             self.i = (self.i + 1) % len(self.image_paths)
             self.update_image()
+
+    def delete_image(self):
+        if self.i > -1 and len(self.image_paths) > 0:
+            Path.unlink(self.image_paths[self.i])
+            self.image_paths.pop(self.i)
+            self.next_image()
+
 
     def slideshow(self):
         icon = QIcon()

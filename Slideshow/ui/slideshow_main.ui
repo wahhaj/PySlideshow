@@ -23,6 +23,15 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout" rowstretch="1,0">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item row="0" column="0">
      <widget class="QLabel" name="lbl_image">
       <property name="text">
@@ -59,6 +68,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="btn_prev">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="maximumSize">
          <size>
           <width>50</width>
@@ -84,10 +96,19 @@
           <height>32</height>
          </size>
         </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btn_play">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="maximumSize">
          <size>
           <width>60</width>
@@ -113,10 +134,19 @@
           <height>32</height>
          </size>
         </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btn_next">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="maximumSize">
          <size>
           <width>50</width>
@@ -142,6 +172,12 @@
           <height>32</height>
          </size>
         </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -159,6 +195,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="btn_delete">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="maximumSize">
          <size>
           <width>50</width>
@@ -183,6 +222,12 @@
           <width>32</width>
           <height>32</height>
          </size>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
