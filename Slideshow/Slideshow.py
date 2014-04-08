@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
 import sys
+from pathlib import Path
+
+from random import randint
 
 from PySide import QtCore
 from PySide.QtGui import QApplication, QMainWindow, QFileDialog, QImage, QPixmap, QIcon, QInputDialog, QMessageBox
-from pathlib import Path
-from random import randint
-from threading import Timer
 
-__version__ = '0.0.1'
+__version__ = '1.0.0'
 
 from ui_slideshow import Ui_MainWindow
 import qrc_slideshow
@@ -55,7 +55,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
     def choose_dir(self):
-        #TODO: show images in folders
+        #todo: show images in folders
         image_dir = QFileDialog.getExistingDirectory(self, self.tr("Choose directory"))
         self.i = -1
 
@@ -151,7 +151,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_speed_slow.setChecked(speed == 2)
         self.action_speed_custom.setChecked(speed >= 3)
 
-        if speed >= 0 and speed < 3:
+        if 0 <= speed < 3:
             self.timer.setInterval(intervals[speed])
         else:
             custom_speed, ok = QInputDialog.getInt(self, 'Custom Speed', 'Enter slideshow speed (1-60 seconds):', 1, 1, 60)
