@@ -18,8 +18,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        #self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        #self.showFullScreen()
 
         #button events
         self.btn_next.clicked.connect(self.next_image)
@@ -30,6 +28,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #menu events
         self.action_exit.triggered.connect(self.close)
         self.action_open.triggered.connect(self.choose_dir)
+        self.action_fullscreen.triggered.connect(self.toggle_fullscreen)
         self.action_speed_fast.triggered.connect(lambda: self.slideshow_speed(0))
         self.action_speed_medium.triggered.connect(lambda: self.slideshow_speed(1))
         self.action_speed_slow.triggered.connect(lambda: self.slideshow_speed(2))
@@ -37,7 +36,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.image_paths = []
         self.i = -1
-        self.playing = False
+        self.is_playing = False
+        self.is_fullscreen = False
 
         self.timer = QtCore.QTimer(self)
         self.connect(self.timer, QtCore.SIGNAL("timeout()"), self.next_image)
@@ -52,6 +52,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.slideshow()
         elif e.key() == QtCore.Qt.Key_Delete:
             self.delete_image()
+        elif e.key() == QtCore.Qt.Key_F11:
+            self.toggle_fullscreen()
+        elif e.key() == QtCore.Qt.Key_Escape and self.is_fullscreen:
+            self.toggle_fullscreen()
 
 
     def choose_dir(self):
@@ -82,14 +86,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.btn_play.setEnabled(False)
             self.btn_delete.setEnabled(False)
 
-            QMessageBox.information(self, "No Images", "No images were found in " + image_dir)
+            QMessageBox.information(self, "No Images", "No images were found in '" + image_dir + "'. Choose another directory.")
 
-    def update_image(self):
-        self.status_bar.showMessage(str(self.image_paths[self.i]))
+    def update_image(self, size=None):
+        self.status_bar.showMessage(str(self.image_paths[self.i]) + "    " + str(self.i + 1) + " of " + str(len(self.image_paths)+1))
         image = QImage(str(self.image_paths[self.i]))
 
         if not image.isNull():
-            lbl_size = (self.lbl_image.width(), self.lbl_image.height())
+            if size==None:
+                lbl_size = (self.lbl_image.width(), self.lbl_image.height())
+            else:
+                lbl_size = size
+
             img_size = (image.width(), image.height())
             ratio = (img_size[0] / lbl_size[0], img_size[1] / lbl_size[1])
 
@@ -116,25 +124,60 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.update_image()
 
     def delete_image(self):
-        if self.i > -1 and len(self.image_paths) > 0:
+        if len(self.image_paths) > 0:
             Path.unlink(self.image_paths[self.i])
             self.image_paths.pop(self.i)
+            self.i -= 1
             self.next_image()
 
 
     def slideshow(self):
         icon = QIcon()
         icon.addPixmap(QPixmap(":/icons/images/media-playback-start.png"), QIcon.Normal, QIcon.Off)
-        if self.playing:
+        if self.is_playing:
             icon.addPixmap(QPixmap(":/icons/images/media-playback-start.png"), QIcon.Normal, QIcon.Off)
             self.btn_play.setIcon(icon)
-            self.playing = False
+            self.is_playing = False
             self.timer.stop()
         else:
             icon.addPixmap(QPixmap(":/icons/images/media-playback-pause.png"), QIcon.Normal, QIcon.Off)
             self.btn_play.setIcon(icon)
-            self.playing = True
+            self.is_playing = True
             self.timer.start()
+
+
+    def toggle_fullscreen(self):
+        if not self.is_fullscreen:
+            if len(self.image_paths) < 1:
+                QMessageBox.information(self, "Error", "Open a directory with images before entering fullscreen mode.")
+                self.action_fullscreen.setChecked(False)
+                return
+            else:
+                self.window_dimensions = self.geometry() #store the dimensions of the window before going fullscreen
+                self.maximized = self.isMaximized() #whether the window is maximised
+                self.image_dimensions = (self.lbl_image.width(), self.lbl_image.height()) #size of image before fullscreen
+                self.window_palette = self.palette()
+                self.showFullScreen()
+                p = self.palette()
+                p.setColor(self.backgroundRole(), QtCore.Qt.black)
+                self.setPalette(p)
+                self.is_fullscreen = True
+        else:
+            self.is_fullscreen = False
+            self.update_image(self.image_dimensions)
+            self.setPalette(self.window_palette)
+            if self.maximized:
+                self.showMaximized()
+            else:
+                self.showNormal()
+                self.setGeometry(self.window_dimensions)
+
+        self.menubar.setVisible(not self.is_fullscreen)
+        self.btn_prev.setFlat(self.is_fullscreen)
+        self.btn_play.setFlat(self.is_fullscreen)
+        self.btn_next.setFlat(self.is_fullscreen)
+        self.btn_delete.setFlat(self.is_fullscreen)
+
 
     def slideshow_speed(self, speed):
         """

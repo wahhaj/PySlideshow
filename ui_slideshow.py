@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '.\ui\slideshow_main.ui'
 #
-# Created: Mon Apr  7 19:27:46 2014
+# Created: Mon Apr 14 21:05:56 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -16,7 +16,10 @@ class Ui_MainWindow(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/images/media-playback-start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
+        MainWindow.setAutoFillBackground(False)
+        MainWindow.setStyleSheet("")
         MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.Canada))
+        MainWindow.setDocumentMode(False)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)
@@ -129,6 +132,9 @@ class Ui_MainWindow(object):
         self.action_about_slideshow.setObjectName("action_about_slideshow")
         self.action_about_pyside = QtGui.QAction(MainWindow)
         self.action_about_pyside.setObjectName("action_about_pyside")
+        self.action_fullscreen = QtGui.QAction(MainWindow)
+        self.action_fullscreen.setCheckable(True)
+        self.action_fullscreen.setObjectName("action_fullscreen")
         self.menuFile.addAction(self.action_open)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.action_exit)
@@ -137,6 +143,7 @@ class Ui_MainWindow(object):
         self.menuSlideshow_speed.addAction(self.action_speed_fast)
         self.menuSlideshow_speed.addAction(self.action_speed_custom)
         self.menuOption.addAction(self.action_recursive)
+        self.menuOption.addAction(self.action_fullscreen)
         self.menuOption.addAction(self.menuSlideshow_speed.menuAction())
         self.menuAbout.addAction(self.action_about_slideshow)
         self.menuAbout.addAction(self.action_about_pyside)
@@ -162,10 +169,14 @@ class Ui_MainWindow(object):
         self.menuAbout.setTitle(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))
         self.action_recursive.setText(QtGui.QApplication.translate("MainWindow", "Include subfolders", None, QtGui.QApplication.UnicodeUTF8))
         self.action_open.setText(QtGui.QApplication.translate("MainWindow", "Open directory", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_open.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+O", None, QtGui.QApplication.UnicodeUTF8))
         self.action_exit.setText(QtGui.QApplication.translate("MainWindow", "Exit", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_exit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
         self.action_speed_slow.setText(QtGui.QApplication.translate("MainWindow", "Slow", None, QtGui.QApplication.UnicodeUTF8))
         self.action_speed_medium.setText(QtGui.QApplication.translate("MainWindow", "Medium", None, QtGui.QApplication.UnicodeUTF8))
         self.action_speed_fast.setText(QtGui.QApplication.translate("MainWindow", "Fast", None, QtGui.QApplication.UnicodeUTF8))
         self.action_speed_custom.setText(QtGui.QApplication.translate("MainWindow", "Custom", None, QtGui.QApplication.UnicodeUTF8))
         self.action_about_slideshow.setText(QtGui.QApplication.translate("MainWindow", "About Slideshow", None, QtGui.QApplication.UnicodeUTF8))
         self.action_about_pyside.setText(QtGui.QApplication.translate("MainWindow", "About PySide", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_fullscreen.setText(QtGui.QApplication.translate("MainWindow", "Fullscreen", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_fullscreen.setShortcut(QtGui.QApplication.translate("MainWindow", "F11", None, QtGui.QApplication.UnicodeUTF8))
