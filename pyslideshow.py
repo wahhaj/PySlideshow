@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-
+"""
+PySlideshow - A simple image slideshow viewer written in Python using PySide.
+"""
 import sys
 from pathlib import Path
 
@@ -14,7 +16,6 @@ from ui_slideshow import Ui_MainWindow
 import qrc_slideshow
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
@@ -22,34 +23,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #button events
         self.btn_next.clicked.connect(self.next_image)
         self.btn_prev.clicked.connect(self.prev_image)
-        self.btn_play.clicked.connect(self.slideshow)
+        self.btn_play.clicked.connect(self.toggle_slideshow)
         self.btn_delete.clicked.connect(self.delete_image)
 
         #menu events
         self.action_exit.triggered.connect(self.close)
         self.action_open.triggered.connect(self.choose_dir)
         self.action_fullscreen.triggered.connect(self.toggle_fullscreen)
-        self.action_speed_fast.triggered.connect(lambda: self.slideshow_speed(0))
-        self.action_speed_medium.triggered.connect(lambda: self.slideshow_speed(1))
-        self.action_speed_slow.triggered.connect(lambda: self.slideshow_speed(2))
-        self.action_speed_custom.triggered.connect(lambda: self.slideshow_speed(3))
+        self.action_speed_fast.triggered.connect(lambda: self.set_slideshow_speed(0))
+        self.action_speed_medium.triggered.connect(lambda: self.set_slideshow_speed(1))
+        self.action_speed_slow.triggered.connect(lambda: self.set_slideshow_speed(2))
+        self.action_speed_custom.triggered.connect(lambda: self.set_slideshow_speed(3))
 
-        self.image_paths = []
-        self.i = -1
-        self.is_playing = False
-        self.is_fullscreen = False
+        self.image_paths = [] #list of images in the chosen directory
+        self.i = -1 #index of current image in image_paths
+        self.is_playing = False #slideshow playing?
+        self.is_fullscreen = False #window fullscreen?
 
+        #slideshow timer
         self.timer = QtCore.QTimer(self)
         self.connect(self.timer, QtCore.SIGNAL("timeout()"), self.next_image)
-        self.slideshow_speed(1)
+        self.set_slideshow_speed(1)
+
+        #window properties
+        self.window_palette = self.palette()
+        self.is_maximized = self.isMaximized()
+        self.window_dimensions = self.geometry()
+        self.image_dimensions = (self.lbl_image.width(), self.lbl_image.height())
 
     def keyPressEvent(self, e):
+        """Handle different keyboard shortcuts."""
         if e.key() == QtCore.Qt.Key_Left:
             self.prev_image()
         elif e.key() == QtCore.Qt.Key_Right:
             self.next_image()
         elif e.key() == QtCore.Qt.Key_Space:
-            self.slideshow()
+            self.toggle_slideshow()
         elif e.key() == QtCore.Qt.Key_Delete:
             self.delete_image()
         elif e.key() == QtCore.Qt.Key_F11:
@@ -57,8 +66,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif e.key() == QtCore.Qt.Key_Escape and self.is_fullscreen:
             self.toggle_fullscreen()
 
-
     def choose_dir(self):
+        """Open file dialog to choose images directory."""
         #todo: show images in folders
         image_dir = QFileDialog.getExistingDirectory(self, self.tr("Choose directory"))
         self.i = -1
@@ -75,7 +84,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.btn_delete.setEnabled(True)
 
             #shuffle array
-            for i in range(len(self.image_paths)-1, -1, -1):
+            for i in range(len(self.image_paths) - 1, -1, -1):
                 j = randint(0, i)
                 self.image_paths[i], self.image_paths[j] = self.image_paths[j], self.image_paths[i]
 
@@ -86,14 +95,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.btn_play.setEnabled(False)
             self.btn_delete.setEnabled(False)
 
-            QMessageBox.information(self, "No Images", "No images were found in '" + image_dir + "'. Choose another directory.")
+            QMessageBox.information(self, "No Images",
+                                    "No images were found in '" + image_dir + "'. Choose another directory.")
 
     def update_image(self, size=None):
-        self.status_bar.showMessage(str(self.image_paths[self.i]) + "    " + str(self.i + 1) + " of " + str(len(self.image_paths)+1))
+        """
+        Display image at current index.
+
+        Args:
+            size (w,h): If provided, image scaled to this size. Otherwise, scaled to window size.
+        """
+        self.status_bar.showMessage(
+            str(self.image_paths[self.i]) + "    " + str(self.i + 1) + " of " + str(len(self.image_paths) + 1))
         image = QImage(str(self.image_paths[self.i]))
 
         if not image.isNull():
-            if size==None:
+            if size is None:
                 lbl_size = (self.lbl_image.width(), self.lbl_image.height())
             else:
                 lbl_size = size
@@ -114,16 +131,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.lbl_image.setPixmap(QPixmap.fromImage(image))
 
     def prev_image(self):
+        """Display previous image."""
         if len(self.image_paths) > 1:
             self.i = (self.i - 1) % len(self.image_paths)
             self.update_image()
 
     def next_image(self):
+        """Display next image."""
         if len(self.image_paths) > 1:
             self.i = (self.i + 1) % len(self.image_paths)
             self.update_image()
 
     def delete_image(self):
+        """Delete current image from filesystem."""
         if len(self.image_paths) > 0:
             Path.unlink(self.image_paths[self.i])
             self.image_paths.pop(self.i)
@@ -131,7 +151,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.next_image()
 
 
-    def slideshow(self):
+    def toggle_slideshow(self):
+        """Play or pauses the slideshow."""
         icon = QIcon()
         icon.addPixmap(QPixmap(":/icons/images/media-playback-start.png"), QIcon.Normal, QIcon.Off)
         if self.is_playing:
@@ -147,28 +168,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
     def toggle_fullscreen(self):
+        """Toggle the fullscreen state of the main window."""
         if not self.is_fullscreen:
-            if len(self.image_paths) < 1:
+            if len(self.image_paths) < 1: #no point going fullscreen if no images loaded
                 QMessageBox.information(self, "Error", "Open a directory with images before entering fullscreen mode.")
                 self.action_fullscreen.setChecked(False)
                 return
             else:
-                self.window_dimensions = self.geometry() #store the dimensions of the window before going fullscreen
-                self.maximized = self.isMaximized() #whether the window is maximised
-                self.image_dimensions = (self.lbl_image.width(), self.lbl_image.height()) #size of image before fullscreen
-                self.window_palette = self.palette()
+                #save window properties so window can be restored to current state when exiting fullscreen
+                self.window_dimensions = self.geometry()
+                self.is_maximized = self.isMaximized()
+                self.image_dimensions = (self.lbl_image.width(), self.lbl_image.height())
+
+                #set fullscreen on
                 self.showFullScreen()
+                self.is_fullscreen = True
+
+                #set window background to black
                 p = self.palette()
                 p.setColor(self.backgroundRole(), QtCore.Qt.black)
                 self.setPalette(p)
-                self.is_fullscreen = True
         else:
-            self.is_fullscreen = False
+            #in fullscreen mode, images are scaled to fullscreen dimensions which prevents the window from returning
+            #to original size when original size is smaller than fullscreen dimensions. therefore, resize image to
+            # original dimensions before exiting fullscreen
             self.update_image(self.image_dimensions)
+
+            #change window background back to default
             self.setPalette(self.window_palette)
-            if self.maximized:
+
+            #set fullscreen off
+            self.is_fullscreen = False
+            if self.is_maximized:
+                #if window was maximised before entering fullscreen, maximise it again
                 self.showMaximized()
             else:
+                #otherwise, retore to its old dimensions
                 self.showNormal()
                 self.setGeometry(self.window_dimensions)
 
@@ -179,16 +214,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_delete.setFlat(self.is_fullscreen)
 
 
-    def slideshow_speed(self, speed):
+    def set_slideshow_speed(self, speed):
         """
-        Set the slideshow interval based on 'sender' where
-        - 0 == fast (2s)
-        - 1 == medium (5s)
-        - 2 == slow (10s)
-        - 3 == custom (1-60s)
-        """
-        intervals = [2000, 5000, 10000] #fast, medium, slow, custom slideshow intervals (milliseconds)
+        Set the interval between each image based on 'speed'
 
+        Args:
+            speed: 0 = fast
+                   1 == medium (5s)
+                   2 == slow (10s)
+                   3 == custom (1-60s)
+        """
+        intervals = [2000, 5000, 10000] #fast, medium, slow slideshow intervals (milliseconds)
+
+        #check the appropriate menu item
         self.action_speed_fast.setChecked(speed == 0)
         self.action_speed_medium.setChecked(speed == 1)
         self.action_speed_slow.setChecked(speed == 2)
@@ -197,13 +235,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if 0 <= speed < 3:
             self.timer.setInterval(intervals[speed])
         else:
-            custom_speed, ok = QInputDialog.getInt(self, 'Custom Speed', 'Enter slideshow speed (1-60 seconds):', 1, 1, 60)
-
+            custom_speed, ok = QInputDialog.getInt(self, 'Custom Speed', 'Enter slideshow speed (1-60 seconds):',
+                                                   1, 1, 60)
             custom_speed *= 1000 #convert to seconds
-
             if ok:
                 self.timer.setInterval(custom_speed)
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
