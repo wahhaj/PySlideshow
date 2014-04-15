@@ -18,8 +18,17 @@
    <iconset resource="slideshow_icons.qrc">
     <normaloff>:/icons/images/media-playback-start.png</normaloff>:/icons/images/media-playback-start.png</iconset>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <property name="locale">
    <locale language="English" country="Canada"/>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout" rowstretch="1,0">
@@ -266,6 +275,7 @@
      <addaction name="action_speed_custom"/>
     </widget>
     <addaction name="action_recursive"/>
+    <addaction name="action_fullscreen"/>
     <addaction name="menuSlideshow_speed"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
@@ -292,10 +302,16 @@
    <property name="text">
     <string>Open directory</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="action_exit">
    <property name="text">
     <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="action_speed_slow">
@@ -338,6 +354,17 @@
   <action name="action_about_pyside">
    <property name="text">
     <string>About PySide</string>
+   </property>
+  </action>
+  <action name="action_fullscreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fullscreen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
    </property>
   </action>
  </widget>
